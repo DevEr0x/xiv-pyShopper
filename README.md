@@ -32,8 +32,8 @@ This tool simply queries the [Universalis API](https://docs.universalis.app/) fo
 There are some limitations to xiv-pyshopper. This is mostly because I don't have that much time to work on the project and I am not sure how useful it is. If people really want these features then I can look at building them or am happy to look at pull requests from other devs. Reach out to me on Discord! Laura#1479
 
 - It cannot get you the list of dyes that you need (yet, dev laziness)
-- It cannot get you the list of flooring/wallpaper/lighting items (also because I am lazy)
-- It does not have a UI or CLI currently. This is just a simple python script right now :)
+~~- It cannot get you the list of flooring/wallpaper/lighting items (also because I am lazy)~~
+~~- It does not have a UI or CLI currently. This is just a simple python script right now :)~~
 - It doesn't check for errors as well as production code should.
 - It does not accept any file formats other than a Makeplace save JSON!
 - It doesn't know anything about items that can be bought from NPC vendors. Watch out for market board scams!
@@ -49,12 +49,9 @@ For starters, you need to have your house design saved as a JSON from [Makeplace
 
 1. Install [Python](https://www.python.org/downloads/) on your computer. It might be installed already, if so then head to a terminal and run `python --version` to check
 2. Once you are sure Python is installed and ready to go, head to the releases tab in Github (or download main.py) and grab a copy of the script.
-3. Open up the script in any text editor. I recommend [VSCode](https://code.visualstudio.com/) for devs but you can use something like [Notepad++](https://notepad-plus-plus.org/downloads/), Vim, or even regular Notepad if you like.
-4. At the top of the file you will see the following: `DATACENTRE_REGION = 'Light'   MAKEPLACE_JSON = 'Save1.json'`
-5. Edit the strings for Light and Save1.json to point to your datacentre, region, or world, and your save. You should drop this save into the same directory as main.py!
-6. If you don't have it already. Run the command `pip install requests` to grab the API requests library for Python. If you don't have pip installed then check out [this post](https://pip.pypa.io/en/stable/installation/)
-7. Go back to your terminal and run either `python main.py` or `python3 main.py` 
-8. The script should now print you out a shopping list like below.
+3. Put main.py & the Makeplace JSON file in the same directory
+4. If you don't have it already. Run the command `pip install requests` to grab the API requests library for Python. If you don't have pip installed then check out [this post](https://pip.pypa.io/en/stable/installation/)
+5. Run the file, and respond to the prompts. It'll print everything out for you in the command prompt but it will also save everything to a text file of your choice in the same directory. (Don't worry about creating a new text file, it'll make one for you if a file with that name doesn't exist)
 
 * If the talk of using a terminal on your PC is scary, don't be afraid! It's easy to use and you just need to follow the steps above. If you are Windows, grab yourself Windows Terminal instead of command prompt. It's very nice :) 
 
