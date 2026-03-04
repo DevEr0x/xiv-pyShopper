@@ -2,8 +2,10 @@ import requests
 import json
 from datetime import datetime
 
-DATACENTRE_REGION = 'Light'
-MAKEPLACE_JSON = 'Save1.json'
+DATACENTRE_REGION = ''
+MAKEPLACE_JSON = 'Lunar Den V2.json'
+FILE_PATH = "ShoppingList.txt"
+shopping_list_file = []
     
 class Item:
     def __init__(self, name, itemid, quantity, price_list, world_list, not_on_market):
@@ -56,6 +58,19 @@ class Shopper:
             else:
                 itemid_list.append(furniture["itemId"])
                 object_list.append(Item(furniture["name"], furniture["itemId"], 1, [], [], not_on_market=False))
+                
+        # This parses for interior fixtures
+        for furniture in data["interiorFixture"]:
+            if furniture["type"] == "District":
+                # We do not want to look for districts
+                print(f"FURNITURE NAME IS {furniture["name"]}")
+                continue
+            if furniture["itemId"] in itemid_list:
+                itemid_index = itemid_list.index(furniture["itemId"])
+                object_list[itemid_index].increment()
+            else:
+                itemid_list.append(furniture["itemId"])
+                object_list.append(Item(furniture["name"], furniture["itemId"], 1, [], [], not_on_market=False))
         
         self.furnitures = object_list
         self.itemIds = itemid_list
@@ -97,6 +112,7 @@ class Shopper:
             return price_request.json()
         except:
             print('An error occured while talking to the Universalis API. Try again in a bit or check if their site is up!')
+            
 
     def get_largest_quantity(self):
         largest_quantity = [furniture.quantity for furniture in self.furnitures]
@@ -117,12 +133,17 @@ class Shopper:
         for world in worlds:
             
             print(f'Your shopping list for {world.name} will cost approx. {world.world_total_price:,} gil')
+            shopping_list_file.append(f'Your shopping list for {world.name} will cost approx. {world.world_total_price:,} gil\n')
             print('------------------------')
+            shopping_list_file.append('------------------------\n')
             
             for furniture in world.furniture_totals:
                 print(f'{furniture[1]}x {furniture[0]}')
+                shopping_list_file.append(f'{furniture[1]}x {furniture[0]}\n')
             print('------------------------')
+            shopping_list_file.append('------------------------\n')
             print(' ')
+            shopping_list_file.append('\n')
     
     def make_shopping_list(self):
         total_cost, unique_worlds, not_on_market = self.get_prices(DATACENTRE_REGION)
@@ -136,23 +157,53 @@ class Shopper:
         now = datetime.now()
         dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
         print(f"This shopping list was created at {dt_string}")	
+        shopping_list_file.append(f"This shopping list was created at {dt_string}\n")
         
         print(f"Total Cost: {total_cost:,} gil")
+        shopping_list_file.append(f"Total Cost: {total_cost:,} gil\n")
         print(f"Items found on {unique_worlds}")
+        shopping_list_file.append(f"Items found on {unique_worlds}\n")
         print('')
+        shopping_list_file.append('\n')
         print(f'Could not find these items on the market. Perhaps they are cash shop or not sellable?')
+        shopping_list_file.append(f'Could not find these items on the market. Perhaps they are cash shop or not sellable?\n')
         for item in not_on_market:
             print(f'{item[2]}x {item[0]}')
+            shopping_list_file.append(f'{item[2]}x {item[0]}\n')
         print('')
+        shopping_list_file.append('\n')
         print("Thank you for shopping with us today!")
+        shopping_list_file.append("Thank you for shopping with us today!")
 
 def main():
+    global DATACENTRE_REGION
+    global MAKEPLACE_JSON
+    global FILE_PATH
+    print("If you would like to search in an entire region, the API names are as follows:")
+    print("• Japan")
+    print("• Europe")
+    print("• North-America")
+    print("• Oceania")
+    print("• China")
+    print("• 中国")
+    DATACENTRE_REGION = input("Please enter the name of the Data Centre, The Region, or the world that you'd like to shop in: \n")
+    MAKEPLACE_JSON = input("Please enter the file name of the .json you'd like to use. Be sure to include the .json extension: \n")
+    FILE_PATH = input("Please name the file to save your shopping list to. Do NOT include the extension, it will be added automatically. If no name is provided, the default \"ShoppingList\" will be used.\n")
+    if not FILE_PATH:
+        FILE_PATH = "ShoppingList.txt"
+    else:
+        FILE_PATH = FILE_PATH.join(".txt")
     try:
         furniture_data = json.load(open(MAKEPLACE_JSON))
     except:
         print('An error occured while loading the JSON. Check your save and maybe re-save it in MakePlace?')
+    shopping_list_file.append(f"Data Centre Entered: {DATACENTRE_REGION}\nJSON File Entered: {MAKEPLACE_JSON}\n\n")
     shopper = Shopper(furniture_data)
     shopper.make_shopping_list()
+    #This will overwrite the previously existing shopping list
+    with open(FILE_PATH, 'w') as file:
+                file.writelines(shopping_list_file)
+    input("Press any key to close. This output can be found saved in the same directory under the file name \"ShoppingList.txt\"")
 
 if __name__ == '__main__':
     main()
