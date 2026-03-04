@@ -29,7 +29,7 @@ This tool simply queries the [Universalis API](https://docs.universalis.app/) fo
 ---
 ## What CAN'T it do?
 
-There are some limitations to xiv-pyshopper. This is mostly because I don't have that much time to work on the project and I am not sure how useful it is. If people really want these features then I can look at building them or am happy to look at pull requests from other devs. Reach out to me on Discord! Laura#1479
+There are some limitations to xiv-pyshopper. This is mostly because I don't have that much time to work on the project and I am not sure how useful it is. If people really want these features then I can look at building them or am happy to look at pull requests from other devs. ~~Reach out to me on Discord! Laura#1479~~ <-- I am not Laura, I forked this from them. I do not know the etiquette of forking things from other devs lmfao.
 
 - It cannot get you the list of dyes that you need (yet, dev laziness)
 ~~- It cannot get you the list of flooring/wallpaper/lighting items (also because I am lazy)~~
